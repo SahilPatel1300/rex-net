@@ -13,23 +13,6 @@ RexNet is a Chrome extension that performs real-time sentiment analysis on text 
 - Dinosaurs are **small, non-intrusive, and delightful**.
 - Works great on news sites, Gmail, Google Scholar, research portals, and most content-heavy pages.
 
----
-
-## 🦖 The Dino Legend
-
-Each dinosaur corresponds to a sentiment category:
-
-| Sentiment | Dinosaur | Vibe |
-|---|---|---|
-| Very Positive 🎉 | T-Rex (dancing) | Absolutely jazzed |
-| Positive 😊 | Brachiosaurus | Optimistic, head held high |
-| Neutral 😐 | Stegosaurus | Unbothered. Just existing. |
-| Negative 😟 | Triceratops | Defensive, a little worried |
-| Very Negative 😱 | Ankylosaurus | Braced for impact |
-| Sarcastic / Mixed 🤨 | Velociraptor | Suspicious. Always suspicious. |
-
----
-
 ## 🛠️ How It Works
 
 ### Auto Mode
