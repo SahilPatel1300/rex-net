@@ -5,8 +5,8 @@
   "manifest_version": 3,
 
   "action": {
-    "default_popup": "rexnet.html",
-    "default_icon": "rexnet_icon.png",
+    "default_popup": "public/rexnet.html",
+    "default_icon": "public/icons/rexnet_icon.png",
     "default_title": "RexNet"
   }
 }
