@@ -1,0 +1,5 @@
+- Chrome extension that reads text on current screen 
+- Takes text and sends it to a flask backend 
+- sends text through model that outputs emotion label 
+- depending on output label, pops up a dinosaur image
+- 
