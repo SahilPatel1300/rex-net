@@ -1,33 +1,61 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  const DEFAULTS = { autoMode: false };
+  const DEFAULTS = {
+    autoMode: false
+  };
+
   const autoCheck = document.getElementById('auto-mode');
   const modeLabel = document.getElementById('mode-description');
 
-  function updateLabel() {
+  /* ================= AUTO LABEL ================= */
+
+  function updateAutoLabel() {
     modeLabel.textContent = autoCheck.checked
       ? 'SCAN PAGE TEXT'
       : 'SCAN HIGHLIGHTED TEXT';
   }
 
-  chrome.storage.sync.get(['rexnetSettings'], ({ rexnetSettings }) => {
-    const saved = (rexnetSettings && typeof rexnetSettings.autoMode === 'boolean')
-      ? rexnetSettings.autoMode
-      : DEFAULTS.autoMode;
+  /* ================= SYSTEM THEME ================= */
 
-    autoCheck.checked = saved;
-    updateLabel();
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function applySystemTheme(e) {
+    const isDark = e.matches;
+    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+  }
+
+  // Apply immediately
+  applySystemTheme(mediaQuery);
+
+  // Listen for OS theme changes live
+  mediaQuery.addEventListener('change', applySystemTheme);
+
+  /* ================= LOAD SETTINGS ================= */
+
+  chrome.storage.sync.get(['rexnetSettings'], ({ rexnetSettings }) => {
+
+    const savedAuto = rexnetSettings?.autoMode ?? DEFAULTS.autoMode;
+
+    autoCheck.checked = savedAuto;
+    updateAutoLabel();
   });
 
-  function save() {
-    chrome.storage.sync.set({
-      rexnetSettings: { autoMode: autoCheck.checked }
+  /* ================= SAVE ================= */
+
+  function saveSettings() {
+    chrome.storage.sync.get(['rexnetSettings'], ({ rexnetSettings }) => {
+      chrome.storage.sync.set({
+        rexnetSettings: {
+          ...rexnetSettings,
+          autoMode: autoCheck.checked
+        }
+      });
     });
   }
 
   autoCheck.addEventListener('change', () => {
-    save();
-    updateLabel();
+    updateAutoLabel();
+    saveSettings();
   });
 
 });

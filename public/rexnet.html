@@ -3,23 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <title>RexNet · auto</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* ================= THEME VARIABLES ================= */
+
+    :root {
+      --bg: #f7f7f7;
+      --text: #333;
+      --border: #333;
+      --section-border: #ddd;
+      --label: #aaa;
+      --muted: #999;
+      --track-bg: #ddd;
+      --track-border: #bbb;
+      --knob: #999;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #111;
+      --text: #eee;
+      --border: #eee;
+      --section-border: #333;
+      --label: #777;
+      --muted: #aaa;
+      --track-bg: #222;
+      --track-border: #444;
+      --knob: #ccc;
+    }
+
     body {
       width: 300px;
-      background: #f7f7f7;
-      color: #333;
+      background: var(--bg);
+      color: var(--text);
       font-family: 'Press Start 2P', monospace;
       font-size: 7px;
       line-height: 2;
+      transition: background 0.2s ease, color 0.2s ease;
     }
 
-    /* ── Header ── */
+    /* ================= HEADER ================= */
+
     header {
       padding: 14px 14px 10px;
-      border-bottom: 3px solid #333;
+      border-bottom: 3px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
@@ -35,25 +65,26 @@
     .header-text h1 {
       font-size: 13px;
       letter-spacing: 1px;
-      color: #222;
       margin-bottom: 4px;
     }
 
-    /* ── Section ── */
+    /* ================= SECTION ================= */
+
     .section {
       padding: 10px 14px;
-      border-bottom: 2px solid #ddd;
+      border-bottom: 2px solid var(--section-border);
     }
 
     .section-label {
       font-size: 5px;
       letter-spacing: 2px;
-      color: #aaa;
+      color: var(--label);
       margin-bottom: 8px;
       text-transform: uppercase;
     }
 
-    /* ── Toggle ── */
+    /* ================= TOGGLE ================= */
+
     .toggle-row {
       display: flex;
       align-items: center;
@@ -63,54 +94,57 @@
     .toggle-info strong {
       display: block;
       font-size: 7px;
-      color: #222;
       margin-bottom: 3px;
     }
 
     .toggle-info span {
       font-size: 5px;
-      color: #999;
+      color: var(--muted);
     }
 
-    .switch { position: relative; width: 40px; height: 20px; cursor: pointer; }
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      cursor: pointer;
+    }
+
     .switch input { display: none; }
 
     .track {
       position: absolute;
       inset: 0;
-      background: #ddd;
-      border: 2px solid #bbb;
+      background: var(--track-bg);
+      border: 2px solid var(--track-border);
     }
 
     .track::before {
       content: '';
       position: absolute;
-      width: 14px; height: 12px;
-      top: 2px; left: 2px;
-      background: #999;
+      width: 14px;
+      height: 12px;
+      top: 2px;
+      left: 2px;
+      background: var(--knob);
       transition: transform 0.1s steps(4), background 0.1s steps(1);
-    }
-
-    .switch input:checked + .track {
-      background: #333;
-      border-color: #222;
     }
 
     .switch input:checked + .track::before {
       transform: translateX(18px);
-      background: #f7f7f7;
     }
 
-    /* ── Footer ── */
+    /* ================= FOOTER ================= */
+
     footer {
       padding: 8px 14px;
       font-size: 5px;
-      color: #bbb;
+      color: var(--label);
       text-align: center;
       letter-spacing: 1px;
     }
   </style>
 </head>
+
 <body>
 
   <header>
@@ -137,6 +171,5 @@
   <footer>REXNET v0.1</footer>
 
   <script src="popup.js"></script>
-
 </body>
 </html>
