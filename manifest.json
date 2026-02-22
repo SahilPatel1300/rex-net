@@ -8,5 +8,7 @@
     "default_popup": "public/rexnet.html",
     "default_icon": "public/icons/rexnet_icon.png",
     "default_title": "RexNet"
-  }
+  },
+
+  "permissions": ["storage"]
 }

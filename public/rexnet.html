@@ -39,12 +39,6 @@
       margin-bottom: 4px;
     }
 
-    .header-text p {
-      font-size: 5px;
-      color: #888;
-      letter-spacing: 0.5px;
-    }
-
     /* ── Section ── */
     .section {
       padding: 10px 14px;
@@ -107,7 +101,7 @@
       background: #f7f7f7;
     }
 
-    /* ── Footer (kept for style) ── */
+    /* ── Footer ── */
     footer {
       padding: 8px 14px;
       font-size: 5px;
@@ -131,7 +125,7 @@
     <div class="toggle-row">
       <div class="toggle-info">
         <strong>AUTO MODE</strong>
-        <span>SCAN PAGE TEXT</span>
+        <span id="mode-description">SCAN HIGHLIGHTED TEXT</span>
       </div>
       <label class="switch">
         <input type="checkbox" id="auto-mode" />
@@ -142,26 +136,7 @@
 
   <footer>REXNET v0.1</footer>
 
-  <script>
-    const DEFAULTS = { autoMode: false };
-    const autoCheck = document.getElementById('auto-mode');
+  <script src="popup.js"></script>
 
-    chrome.storage.sync.get(['rexnetSettings'], ({ rexnetSettings }) => {
-      const saved = (rexnetSettings && typeof rexnetSettings.autoMode === 'boolean') 
-        ? rexnetSettings.autoMode 
-        : DEFAULTS.autoMode;
-      autoCheck.checked = saved;
-    });
-
-    function save() {
-      chrome.storage.sync.set({
-        rexnetSettings: {
-          autoMode: autoCheck.checked
-        }
-      });
-    }
-
-    autoCheck.addEventListener('change', save);
-  </script>
 </body>
 </html>
