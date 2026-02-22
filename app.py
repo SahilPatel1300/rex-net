@@ -7,7 +7,7 @@ Serves at http://localhost:5000 by default.
 """
 from flask import Flask
 
-from app.images_bp import images_bp
+from blueprints.images_bp import images_bp
 
 app = Flask(__name__)
 app.register_blueprint(images_bp, url_prefix="/api")
