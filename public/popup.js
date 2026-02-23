@@ -10,9 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ================= AUTO LABEL ================= */
 
   function updateAutoLabel() {
-    modeLabel.textContent = autoCheck.checked
-      ? 'SCAN PAGE TEXT'
-      : 'SCAN HIGHLIGHTED TEXT';
+    const modeTitle = document.getElementById('mode-title');
+    if (autoCheck.checked) {
+      modeTitle.textContent = 'AUTO MODE';
+      modeLabel.textContent = 'SCAN PAGE TEXT';
+    } else {
+      modeTitle.textContent = 'SELECT MODE';
+      modeLabel.textContent = 'SCAN HIGHLIGHTED TEXT';
+    }
   }
 
   /* ================= SYSTEM THEME ================= */
