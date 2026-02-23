@@ -1,16 +1,20 @@
 """
-Blueprint: accept text, verify it is text, return an image from imgs/.
+Blueprint: accept text, verify it is text, run emotion model, return an image from imgs/<emotion>/.
 """
 import os
 from pathlib import Path
 
 from flask import Blueprint, request, send_file, jsonify
 
+from services.emotion_image import EmotionImageService
+
 images_bp = Blueprint("images", __name__)
 
-# Project root (parent of this package); imgs/ is next to app/
+# Project root (parent of this package); imgs/ is next to blueprints/
 APP_ROOT = Path(__file__).resolve().parent.parent
 IMGS_DIR = APP_ROOT / "imgs"
+
+emotion_service = EmotionImageService(imgs_root=IMGS_DIR)
 
 # Allowed image extensions for safe serving
 ALLOWED_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".webp"}
@@ -55,53 +59,57 @@ def _safe_image_path(filename: str) -> Path | None:
     return path
 
 
-def _default_image_path() -> Path | None:
-    """Return path to first available image in imgs/ or None."""
-    if not IMGS_DIR.is_dir():
-        return None
-    for p in sorted(IMGS_DIR.iterdir()):
-        if p.is_file() and p.suffix.lower() in ALLOWED_EXTENSIONS:
-            return p
-    return None
-
-
 @images_bp.route("/image", methods=["POST"])
 def get_image():
     """
     Expects JSON body: { "text": "<string>", "image": "<optional filename>" }.
-    Validates that "text" is valid text; returns image from imgs/ (by name or default).
+    Validates text; runs emotion model; returns image from imgs/<emotion>/ (random)
+    and analysis in headers. If "image" is provided, serves that file from imgs/ instead.
     """
+    print("[images_bp] POST /api/image")
     if not request.is_json:
+        print("[images_bp] 415: not JSON")
         return jsonify({"error": "Content-Type must be application/json"}), 415
 
     data = request.get_json(silent=True)
     if data is None:
+        print("[images_bp] 400: invalid JSON")
         return jsonify({"error": "Invalid JSON body"}), 400
 
     text = data.get("text")
     if not _is_valid_text(text):
+        print("[images_bp] 400: invalid text")
         return jsonify({
             "error": "Invalid or missing text. Provide a non-empty string (no path characters)."
         }), 400
 
-    # Optional: specific image filename from imgs/
     image_path = None
+    analysis = None
+
     if "image" in data and isinstance(data["image"], str):
         image_path = _safe_image_path(data["image"].strip())
+        if image_path:
+            print(f"[images_bp] using explicit image: {image_path.name}")
 
     if image_path is None:
-        image_path = _default_image_path()
+        print("[images_bp] calling emotion_service.get_image_for_text")
+        analysis, image_path = emotion_service.get_image_for_text(text)
 
     if image_path is None:
+        label = (analysis or {}).get("label", "unknown")
+        print(f"[images_bp] 404: no image for emotion {label}")
         return jsonify({
-            "error": "No image available. Add a supported image (e.g. .png, .jpg) to the imgs/ folder."
+            "error": f"No image found for this emotion. Add images to imgs/{label}/."
         }), 404
 
+    print(f"[images_bp] 200: sending {image_path.name}" + (f" (emotion={analysis['label']})" if analysis else ""))
     response = send_file(
         image_path,
         mimetype=None,
         as_attachment=False,
         download_name=image_path.name,
     )
-    response.headers["Access-Control-Allow-Origin"] = "*"
+    if analysis is not None:
+        response.headers["X-Emotion"] = analysis["label"]
+        response.headers["X-Emotion-Score"] = str(analysis["score"])
     return response
