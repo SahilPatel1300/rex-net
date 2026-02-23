@@ -9,10 +9,12 @@ from flask import Flask
 from flask_cors import CORS
 
 from blueprints.images_bp import images_bp
+from blueprints.health_bp import health_bp
 
 app = Flask(__name__)
 CORS(app)  # CORS on all routes and responses; handles OPTIONS preflight
 app.register_blueprint(images_bp, url_prefix="/api")
+app.register_blueprint(health_bp, url_prefix="/api")
 
 
 if __name__ == "__main__":
