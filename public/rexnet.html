@@ -1,5 +1,175 @@
-<html>
-  <body>
-    <h1>RexNet</h1>
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RexNet · auto</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ================= THEME VARIABLES ================= */
+
+    :root {
+      --bg: #f7f7f7;
+      --text: #333;
+      --border: #333;
+      --section-border: #ddd;
+      --label: #aaa;
+      --muted: #999;
+      --track-bg: #ddd;
+      --track-border: #bbb;
+      --knob: #999;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #111;
+      --text: #eee;
+      --border: #eee;
+      --section-border: #333;
+      --label: #777;
+      --muted: #aaa;
+      --track-bg: #222;
+      --track-border: #444;
+      --knob: #ccc;
+    }
+
+    body {
+      width: 300px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 7px;
+      line-height: 2;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    /* ================= HEADER ================= */
+
+    header {
+      padding: 14px 14px 10px;
+      border-bottom: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      image-rendering: pixelated;
+    }
+
+    .header-text h1 {
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    /* ================= SECTION ================= */
+
+    .section {
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--section-border);
+    }
+
+    .section-label {
+      font-size: 5px;
+      letter-spacing: 2px;
+      color: var(--label);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    /* ================= TOGGLE ================= */
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .toggle-info strong {
+      display: block;
+      font-size: 7px;
+      margin-bottom: 3px;
+    }
+
+    .toggle-info span {
+      font-size: 5px;
+      color: var(--muted);
+    }
+
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .switch input { display: none; }
+
+    .track {
+      position: absolute;
+      inset: 0;
+      background: var(--track-bg);
+      border: 2px solid var(--track-border);
+    }
+
+    .track::before {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 12px;
+      top: 2px;
+      left: 2px;
+      background: var(--knob);
+      transition: transform 0.1s steps(4), background 0.1s steps(1);
+    }
+
+    .switch input:checked + .track::before {
+      transform: translateX(18px);
+    }
+
+    /* ================= FOOTER ================= */
+
+    footer {
+      padding: 8px 14px;
+      font-size: 5px;
+      color: var(--label);
+      text-align: center;
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <img src="icons/steg.png" alt="stegosaurus" />
+    <div class="header-text">
+      <h1>REXNET</h1>
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="section-label">DETECTION</div>
+    <div class="toggle-row">
+      <div class="toggle-info">
+        <strong id="mode-title">AUTO MODE</strong>
+        <span id="mode-description">SCAN HIGHLIGHTED TEXT</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="auto-mode" />
+        <div class="track"></div>
+      </label>
+    </div>
+  </div>
+
+  <footer>REXNET v0.1</footer>
+
+  <script src="popup.js"></script>
+</body>
 </html>
