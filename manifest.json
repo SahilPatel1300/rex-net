@@ -4,6 +4,13 @@
   "description": "Real-time sentiment analysis with dinosaur stickers. Because everything is more fun with dinosaurs.",
   "manifest_version": 3,
 
+  "icons":{
+    "16": "public/icons/16x16.png",
+    "32": "public/icons/rexnet_icon.png",
+    "48": "public/icons/rexnet_icon.png",
+    "128": "public/icons/rexnet_icon.png"
+  }
+
   "action": {
     "default_popup": "public/rexnet.html",
     "default_icon": "public/icons/rexnet_icon.png",
