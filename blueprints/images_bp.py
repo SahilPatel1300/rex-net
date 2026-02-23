@@ -109,7 +109,6 @@ def get_image():
         as_attachment=False,
         download_name=image_path.name,
     )
-    response.headers["Access-Control-Allow-Origin"] = "*"
     if analysis is not None:
         response.headers["X-Emotion"] = analysis["label"]
         response.headers["X-Emotion-Score"] = str(analysis["score"])
