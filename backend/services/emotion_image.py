@@ -4,6 +4,8 @@ Service: text -> RoBERTa Go Emotions -> top emotion -> random image from imgs/<e
 import random
 from pathlib import Path
 
+from processor import TextCondensor
+
 # Same 28 labels as utils/make_imgs_dir.py (allowed folder names only)
 EMOTION_LABELS = [
     "admiration", "amusement", "anger", "annoyance", "approval", "caring",
@@ -92,13 +94,18 @@ class EmotionImageService:
         """
         Returns (analysis, image_path). analysis = {"label": str, "score": float}.
         image_path is None if no image could be found (with fallbacks).
+        Input text is condensed to at most 512 tokens (random sentence sample) before the model.
         """
         print(f"[EmotionImageService] get_image_for_text: {text[:60]!r}...")
         if not self._imgs_root.is_dir():
             print("[EmotionImageService] imgs_root is not a directory, returning None")
             return ({"label": "neutral", "score": 0.0}, None)
 
-        label, score = self._top_emotion(text)
+        # Filter/condense long text to at most 512 tokens so the model doesn't overflow
+        condensed = TextCondensor(text).get_condensed(max_tokens=512)
+        if not condensed.strip():
+            condensed = text.strip() or "neutral"
+        label, score = self._top_emotion(condensed)
         analysis = {"label": label, "score": score}
 
         path = self._random_image_for_emotion(label)
