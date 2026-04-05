@@ -142,6 +142,73 @@
       text-align: center;
       letter-spacing: 1px;
     }
+
+    /* ================= SCAN ================= */
+
+    .scan-btn {
+      width: 100%;
+      padding: 10px 8px;
+      font-family: inherit;
+      font-size: 7px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: var(--track-bg);
+      color: var(--text);
+      border: 3px solid var(--border);
+      transition: background 0.15s ease, transform 0.05s steps(2);
+    }
+
+    .scan-btn:hover:not(:disabled) {
+      background: var(--section-border);
+    }
+
+    .scan-btn:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .scan-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .scan-status {
+      margin-top: 10px;
+      font-size: 5px;
+      line-height: 1.8;
+      color: var(--muted);
+      min-height: 1.8em;
+      word-break: break-word;
+    }
+
+    .scan-status.error {
+      color: #c44;
+    }
+
+    body[data-theme="dark"] .scan-status.error {
+      color: #f66;
+    }
+
+    .result-wrap {
+      margin-top: 12px;
+      border: 2px solid var(--section-border);
+      padding: 8px;
+      text-align: center;
+    }
+
+    .result-wrap img {
+      max-width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+      vertical-align: middle;
+    }
+
+    .emotion-row {
+      margin-top: 8px;
+      font-size: 5px;
+      color: var(--label);
+      letter-spacing: 1px;
+    }
   </style>
 </head>
 
@@ -158,13 +225,23 @@
     <div class="section-label">DETECTION</div>
     <div class="toggle-row">
       <div class="toggle-info">
-        <strong id="mode-title">AUTO MODE</strong>
+        <strong id="mode-title">SELECT MODE</strong>
         <span id="mode-description">SCAN HIGHLIGHTED TEXT</span>
       </div>
       <label class="switch">
         <input type="checkbox" id="auto-mode" />
         <div class="track"></div>
       </label>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-label">SCAN</div>
+    <button type="button" id="scan-btn" class="scan-btn">RUN SCAN</button>
+    <p class="scan-status" id="scan-status" aria-live="polite"></p>
+    <div class="result-wrap" id="result-wrap" hidden>
+      <img id="result-img" alt="Emotion result" />
+      <div class="emotion-row" id="emotion-row"></div>
     </div>
   </div>
 

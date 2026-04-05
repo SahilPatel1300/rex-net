@@ -17,5 +17,7 @@
     "default_title": "RexNet"
   },
 
-  "permissions": ["storage"]
+  "permissions": ["storage", "activeTab", "scripting"],
+
+  "host_permissions": ["http://localhost:5000/*"]
 }
